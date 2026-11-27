@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects & Contact — Kago Constructions</title>
+  <meta name="description" content="Explore Kago Constructions' portfolio of residential, commercial, and infrastructure projects across Botswana." />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ── Filter Bar ─────────────────────────────────── */
+    .filter-bar {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 56px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 10px 24px; font-family: var(--body); font-size: 11px;
+      font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+      border: 1px solid var(--border); color: var(--muted);
+      transition: all 0.25s; cursor: pointer; background: transparent;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      border-color: var(--gold); color: var(--gold); background: var(--gold-dim);
+    }
+
+    /* ── Project Grid ───────────────────────────────── */
+    .projects-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+      background: var(--border);
+    }
+    .project-card {
+      background: var(--surface); overflow: hidden; position: relative;
+      transition: background 0.3s;
+    }
+    .project-card:hover { background: var(--surface-2); }
+    .project-card.featured-card { grid-column: span 2; }
+
+    .project-img {
+      position: relative; overflow: hidden;
+    }
+    .project-card:not(.featured-card) .project-img { height: 240px; }
+    .project-card.featured-card .project-img { height: 380px; }
+
+    .project-img-inner {
+      width: 100%; height: 100%; position: relative;
+      transition: transform 0.6s var(--ease-out-expo);
+    }
+    .project-card:hover .project-img-inner { transform: scale(1.03); }
+
+    .proj-bg-1 { background: linear-gradient(135deg, #1a1a1a, #222) repeating-conic-gradient(#181818 0% 25%, #222 0% 50%); background-size: 100%, 60px 60px; }
+    .proj-bg-2 { background: linear-gradient(135deg, #1c1a14, #1a1a1a); }
+    .proj-bg-3 { background: linear-gradient(150deg, #141818, #1a1a1a); }
+    .proj-bg-4 { background: linear-gradient(120deg, #181414, #1a1a1a); }
+    .proj-bg-5 { background: linear-gradient(160deg, #141818, #1a1818); }
+    .proj-bg-6 { background: linear-gradient(140deg, #181414, #151515); }
+
+    .project-img-icon {
+      position: absolute; inset: 0; display: flex; align-items: center;
+      justify-content: center;
+    }
+    .project-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(8,8,8,0.9) 0%, transparent 50%);
+    }
+    .project-overlay-top {
+      position: absolute; top: 0; right: 0;
+      display: flex; flex-direction: column; align-items: flex-end; gap: 8px; padding: 20px;
+    }
+    .project-tag {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--gold);
+      background: rgba(8,8,8,0.75); border: 1px solid var(--gold-border);
+      padding: 5px 10px; backdrop-filter: blur(8px);
+    }
+
+    .project-info { padding: 28px 32px; }
+    .project-title {
+      font-family: var(--display); font-size: 22px; font-weight: 400;
+      color: var(--white); margin-bottom: 8px; line-height: 1.3;
+    }
+    .project-card.featured-card .project-title { font-size: 28px; }
+    .project-meta-row {
+      display: flex; gap: 20px; margin-bottom: 12px;
+    }
+    .project-meta-item {
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    .project-meta-label {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--muted-2);
+    }
+    .project-meta-val { font-size: 13px; color: var(--muted); }
+    .project-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+    /* ── Services Detail ────────────────────────────── */
+    .services-detail { background: var(--surface); }
+    .services-detail-grid {
+      display: grid; grid-template-columns: 1fr 2fr; gap: 100px; align-items: start;
+    }
+    .services-list { display: flex; flex-direction: column; gap: 2px; margin-top: 48px; }
+    .service-list-item {
+      padding: 24px 28px; background: var(--surface-2);
+      border-left: 2px solid transparent;
+      transition: border-color 0.3s, background 0.3s; cursor: pointer;
+    }
+    .service-list-item.active, .service-list-item:hover {
+      border-color: var(--gold); background: var(--surface-3);
+    }
+    .service-list-name {
+      font-family: var(--display); font-size: 20px; font-weight: 400; color: var(--white);
+    }
+    .service-list-brief { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+    .service-detail-panel { position: sticky; top: 120px; }
+    .service-detail-panel > div { display: none; }
+    .service-detail-panel > div.active { display: block; }
+    .sdp-num {
+      font-family: var(--display); font-size: 120px; font-weight: 700;
+      color: rgba(255,255,255,0.03); line-height: 1; margin-bottom: -30px;
+    }
+    .sdp-title {
+      font-family: var(--display); font-size: 48px; font-weight: 300;
+      color: var(--white); margin-bottom: 24px;
+    }
+    .sdp-body { font-size: 16px; color: var(--muted); line-height: 1.8; margin-bottom: 32px; }
+    .sdp-features { display: flex; flex-direction: column; gap: 12px; }
+    .sdp-feature {
+      display: flex; align-items: flex-start; gap: 16px;
+      padding: 16px 20px; background: var(--surface-2); border: 1px solid var(--border);
+    }
+    .sdp-feature-dot {
+      width: 6px; height: 6px; background: var(--gold);
+      border-radius: 50%; flex-shrink: 0; margin-top: 6px;
+    }
+    .sdp-feature-text { font-size: 14px; color: var(--cream); }
+
+    /* ── Process ────────────────────────────────────── */
+    .process { background: var(--bg); }
+    .process-steps {
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      gap: 0; background: var(--border); margin-top: 64px;
+    }
+    .process-step {
+      background: var(--surface); padding: 40px 32px; position: relative;
+      transition: background 0.3s;
+    }
+    .process-step:hover { background: var(--surface-2); }
+    .process-step::after {
+      content: '→';
+      position: absolute; right: -12px; top: 50%; transform: translateY(-50%);
+      color: var(--gold-border); font-size: 20px; z-index: 1;
+    }
+    .process-step:last-child::after { display: none; }
+    .process-num {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
+      color: var(--gold); margin-bottom: 16px;
+    }
+    .process-name {
+      font-family: var(--display); font-size: 20px; font-weight: 400;
+      color: var(--white); margin-bottom: 10px;
+    }
+    .process-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+    /* ── Contact ────────────────────────────────────── */
+    .contact { background: var(--surface); }
+    .contact-grid {
+      display: grid; grid-template-columns: 1fr 1.5fr; gap: 80px; align-items: start;
+    }
+    .contact-info { display: flex; flex-direction: column; gap: 0; }
+    .contact-info-item {
+      padding: 32px 0; border-bottom: 1px solid var(--border);
+    }
+    .contact-info-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 8px;
+    }
+    .contact-info-val {
+      font-family: var(--display); font-size: 22px; font-weight: 300; color: var(--white);
+    }
+    .contact-info-sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+    /* Form */
+    .form { display: flex; flex-direction: column; gap: 16px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 8px; }
+    .form-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .form-input, .form-select, .form-textarea {
+      background: var(--surface-2); border: 1px solid var(--border);
+      color: var(--cream); font-family: var(--body); font-size: 14px;
+      padding: 14px 18px; outline: none;
+      transition: border-color 0.25s, background 0.25s;
+      width: 100%;
+    }
+    .form-select { appearance: none; cursor: pointer; }
+    .form-textarea { resize: vertical; min-height: 140px; }
+    .form-input::placeholder, .form-textarea::placeholder { color: var(--muted-2); }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--gold); background: var(--surface-3);
+    }
+    .form-submit { margin-top: 8px; }
+
+    /* Map placeholder */
+    .map-block {
+      margin-top: 80px; background: var(--surface-2); border: 1px solid var(--border);
+      height: 360px; display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .map-block::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 49px, rgba(201,146,42,0.04) 49px, rgba(201,146,42,0.04) 50px),
+        repeating-linear-gradient(90deg, transparent, transparent 49px, rgba(201,146,42,0.04) 49px, rgba(201,146,42,0.04) 50px);
+    }
+    .map-pin {
+      position: relative; z-index: 1; text-align: center;
+    }
+    .map-pin-dot {
+      width: 14px; height: 14px; background: var(--gold); border-radius: 50%;
+      margin: 0 auto 12px; box-shadow: 0 0 0 8px rgba(201,146,42,0.15),
+        0 0 0 16px rgba(201,146,42,0.07);
+    }
+    .map-pin-label {
+      font-family: var(--display); font-size: 18px; color: var(--white);
+    }
+    .map-pin-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+    /* ── Mobile Menu ────────────────────────────────── */
+    .mobile-menu {
+      position: fixed; inset: 0; background: var(--bg); z-index: 99;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      gap: 40px; transform: translateX(100%); transition: transform 0.4s var(--ease-out-expo);
+    }
+    .mobile-menu.open { transform: none; }
+    .mobile-menu a {
+      font-family: var(--display); font-size: 48px; font-weight: 300;
+      color: var(--white); transition: color 0.25s;
+    }
+    .mobile-menu a:hover { color: var(--gold); }
+
+    @media (max-width: 1024px) {
+      .projects-grid { grid-template-columns: 1fr 1fr; }
+      .project-card.featured-card { grid-column: span 2; }
+      .services-detail-grid { grid-template-columns: 1fr; gap: 48px; }
+      .process-steps { grid-template-columns: 1fr 1fr; }
+      .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+    }
+    @media (max-width: 768px) {
+      .projects-grid { grid-template-columns: 1fr; }
+      .project-card.featured-card { grid-column: span 1; }
+      .form-row { grid-template-columns: 1fr; }
+      .process-steps { grid-template-columns: 1fr; }
+      .process-step::after { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav">
+  <div class="container">
+    <a href="index.html" class="nav-logo">
+      <span class="logo-main">Kago</span>
+      <span class="logo-sub">Constructions</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="tel:+26771234567" class="nav-tel">+267 71 234 567</a>
+      <a href="#contact" class="btn-primary" style="padding:12px 24px; font-size:11px;">Get a Quote</a>
+    </div>
+    <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobile-menu">
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="projects.html">Projects</a>
+  <a href="#contact">Contact</a>
+</div>
+
+<!-- Page Hero -->
+<section class="page-hero">
+  <div class="page-hero-num">03</div>
+  <div class="container">
+    <span class="tag reveal">Our Work</span>
+    <h1 class="heading-xl reveal reveal-delay-1" style="margin-top:20px; max-width:700px;">
+      Projects That<br><em class="italic gold">Define</em> Botswana
+    </h1>
+    <p class="body-lg reveal reveal-delay-2" style="max-width:500px; margin-top:28px;">
+      From Francistown industrial parks to Gaborone commercial towers —
+      every project carries our signature: quality that endures.
+    </p>
+  </div>
+</section>
+
+<!-- Projects -->
+<section class="section" style="background:var(--bg);">
+  <div class="container">
+    <div class="filter-bar reveal">
+      <button class="filter-btn active" data-filter="all">All Projects</button>
+      <button class="filter-btn" data-filter="residential">Residential</button>
+      <button class="filter-btn" data-filter="commercial">Commercial</button>
+      <button class="filter-btn" data-filter="infrastructure">Infrastructure</button>
+      <button class="filter-btn" data-filter="renovation">Renovation</button>
+    </div>
+
+    <div class="projects-grid">
+      <!-- Featured -->
+      <div class="project-card featured-card reveal" data-category="commercial">
+        <div class="project-img">
+          <div class="project-img-inner proj-bg-1">
+            <div class="project-img-icon">
+              <svg width="80" height="80" viewBox="0 0 80 80" fill="none" stroke="rgba(201,146,42,0.15)" stroke-width="1">
+                <rect x="10" y="20" width="60" height="55"/><rect x="20" y="35" width="10" height="15"/><rect x="35" y="35" width="10" height="15"/><rect x="50" y="35" width="10" height="15"/>
+                <rect x="20" y="55" width="10" height="20"/><rect x="50" y="55" width="10" height="20"/>
+                <line x1="10" y1="20" x2="40" y2="5" stroke-width="1"/><line x1="70" y1="20" x2="40" y2="5"/>
+              </svg>
+            </div>
+          </div>
+          <div class="project-overlay"></div>
+          <div class="project-overlay-top">
+            <span class="project-tag">Commercial</span>
+            <span class="project-tag">Flagship</span>
+          </div>
+        </div>
+        <div class="project-info">
+          <div class="project-meta-row">
+            <div class="project-meta-item"><span class="project-meta-label">Location</span><span class="project-meta-val">Gaborone CBD</span></div>
+            <div class="project-meta-item"><span class="project-meta-label">Value</span><span class="project-meta-val">P 42M</span></div>
+            <div class="project-meta-item"><span class="project-meta-label">Completed</span><span class="project-meta-val">2023</span></div>
+          </div>
+          <h3 class="project-title">Masa Heights Commercial Tower</h3>
+          <p class="project-desc">12-storey mixed-use tower with premium office space, ground-floor retail, and rooftop terrace. A landmark in Gaborone's CBD skyline.</p>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="project-card reveal reveal-delay-1" data-category="residential">
+        <div class="project-img">
+          <div class="project-img-inner proj-bg-2">
+            <div class="project-img-icon">
+              <svg width="60" height="60" viewBox="0 0 60 60" fill="none" stroke="rgba(201,146,42,0.15)" stroke-width="1">
+                <polygon points="30,5 55,25 55,55 5,55 5,25"/><rect x="22" y="38" width="16" height="17"/><polygon points="30,5 55,25 5,25"/>
+              </svg>
+            </div>
+          </div>
+          <div class="project-overlay"></div>
+          <div class="project-overlay-top"><span class="project-tag">Residential</span></div>
+        </div>
+        <div class="project-info">
+          <div class="project-meta-row">
+            <div class="project-meta-item"><span class="project-meta-label">Location</span><span class="project-meta-val">Francistown</span></div>
+            <div class="project-meta-item"><span class="project-meta-label">Units</span><span class="project-meta-val">48 Homes</span></div>
+          </div>
+          <h3 class="project-title">Boiteko Estate, Phase II</h3>
+          <p class="project-desc">Gated residential estate featuring 48 contemporary 3 and 4-bedroom family homes with landscaped gardens and community amenities.</p>
+        </div>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="project-card reveal reveal-delay-1" data-category="infrastructure">
+        <div class="project-img">
+          <div class="project-img-inner proj-bg-3">
+            <div class="project-img-icon">
+              <svg width="60" height="60" viewBox="0 0 60 60" fill="none" stroke="rgba(201,146,42,0.15)" stroke-width="1">
+                <line x1="5" y1="40" x2="55" y2="40"/><path d="M5 40 Q30 10 55 40"/><line x1="20" y1="40" x2="20" y2="55"/><line x1="40" y1="40" x2="40" y2="55"/>
+              </svg>
+            </div>
+          </div>
+          <div class="project-overlay"></div>
+          <div class="project-overlay-top"><span class="project-tag">Infrastructure</span></div>
+        </div>
+        <div class="project-info">
+          <div class="project-meta-row">
+            <div class="project-meta-item"><span class="project-meta-label">Location</span><span class="project-meta-val">Palapye–Serowe</span></div>
+            <div class="project-meta-item"><span class="project-meta-label">Value</span><span class="project-meta-val">P 18M</span></div>
+          </div>
+          <h3 class="project-title">A1 Road Corridor Upgrade</h3>
+          <p class="project-desc">14km highway upgrade including dual carriageway, bridges, drainage systems, and safety infrastructure on Botswana's main arterial route.</p>
+        </div>
+      </div>
+
+      <!-- Project 4 -->
+      <div class="project-card reveal reveal-delay-2" data-category="commercial">
+        <div class="project-img">
+          <div class="project-img-inner proj-bg-4">
+            <div class="project-img-icon">
+              <svg width="60" height="60" viewBox="0 0 60 60" fill="none" stroke="rgba(201,146,42,0.15)" stroke-width="1">
+                <rect x="5" y="20" width="50" height="35"/><rect x="5" y="15" width="50" height="5"/><rect x="15" y="30" width="10" height="10"/><rect x="35" y="30" width="10" height="10"/>
+                <rect x="22" y="38" width="16" height="17"/><line x1="15" y1="15" x2="15" y2="5"/><line x1="45" y1="15" x2="45" y2="5"/>
+              </svg>
+            </div>
+          </div>
+          <div class="project-overlay"></div>
+          <div class="project-overlay-top"><span class="project-tag">Commercial</span></div>
+        </div>
+        <div class="project-info">
+          <div class="project-meta-row">
+            <div class="project-meta-item"><span class="project-meta-label">Location</span><span class="project-meta-val">Maun</span></div>
+            <div class="project-meta-item"><span class="project-meta-label">Value</span><span class="project-meta-val">P 9.5M</span></div>
+          </div>
+          <h3 class="project-title">Okavango Office & Retail Park</h3>
+          <p class="project-desc">Mixed-use commercial development in Maun, anchoring the town's new business district with 12 retail units and 3 floors of office space.</p>
+        </div>
+      </div>
+
+      <!-- Project 5 -->
+      <div class="project-card reveal reveal-delay-2" data-category="renovation">
+        <div class="project-img">
+          <div class="project-img-inner proj-bg-5">
+            <div class="project-img-icon">
+              <svg width="60" height="60" viewBox="0 0 60 60" fill="none" stroke="rgba(201,146,42,0.15)" stroke-width="1">
+                <path d="M35 10 L50 25 L25 50 L10 50 L10 35 Z"/><path d="M45 5 L55 15 L50 20 L40 10 Z"/><line x1="10" y1="50" x2="5" y2="55"/>
+              </svg>
+            </div>
+          </div>
+          <div class="project-overlay"></div>
+          <div class="project-overlay-top"><span class="project-tag">Renovation</span></div>
+        </div>
+        <div class="project-info">
+          <div class="project-meta-row">
+            <div class="project-meta-item"><span class="project-meta-label">Location</span><span class="project-meta-val">Gaborone</span></div>
+            <div class="project-meta-item"><span class="project-meta-label">Value</span><span class="project-meta-val">P 5.2M</span></div>
+          </div>
+          <h3 class="project-title">Standard Chartered HQ Fit-Out</h3>
+          <p class="project-desc">Full interior fit-out and upgrade of Standard Chartered Bank's Gaborone headquarters — 6 floors, 3,200m² of premium office environment.</p>
+        </div>
+      </div>
+
+      <!-- Project 6 -->
+      <div class="project-card reveal reveal-delay-3" data-category="residential">
+        <div class="project-img">
+          <div class="project-img-inner proj-bg-6">
+            <div class="project-img-icon">
+              <svg width="60" height="60" viewBox="0 0 60 60" fill="none" stroke="rgba(201,146,42,0.15)" stroke-width="1">
+                <rect x="5" y="25" width="22" height="30"/><rect x="33" y="15" width="22" height="40"/><rect x="12" y="38" width="8" height="17"/><rect x="40" y="30" width="8" height="12"/><line x1="2" y1="55" x2="58" y2="55" stroke-width="2"/>
+              </svg>
+            </div>
+          </div>
+          <div class="project-overlay"></div>
+          <div class="project-overlay-top"><span class="project-tag">Residential</span></div>
+        </div>
+        <div class="project-info">
+          <div class="project-meta-row">
+            <div class="project-meta-item"><span class="project-meta-label">Location</span><span class="project-meta-val">Kasane</span></div>
+            <div class="project-meta-item"><span class="project-meta-label">Units</span><span class="project-meta-val">24 Villas</span></div>
+          </div>
+          <h3 class="project-title">Chobe River Villa Development</h3>
+          <p class="project-desc">Luxury safari-influenced villas adjacent to Chobe National Park — blending premium contemporary design with the natural Botswana landscape.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Services Detail -->
+<section class="services-detail section">
+  <div class="container">
+    <div class="services-detail-grid">
+      <div>
+        <span class="tag reveal">Services</span>
+        <h2 class="heading-md reveal reveal-delay-1" style="margin-top:20px;">What We<br>Deliver</h2>
+        <div class="services-list reveal reveal-delay-2">
+          <div class="service-list-item active" data-service="residential">
+            <div class="service-list-name">Residential</div>
+            <div class="service-list-brief">Homes, estates &amp; housing schemes</div>
+          </div>
+          <div class="service-list-item" data-service="commercial">
+            <div class="service-list-name">Commercial</div>
+            <div class="service-list-brief">Offices, retail &amp; mixed-use</div>
+          </div>
+          <div class="service-list-item" data-service="infrastructure">
+            <div class="service-list-name">Infrastructure</div>
+            <div class="service-list-brief">Roads, bridges &amp; civil works</div>
+          </div>
+          <div class="service-list-item" data-service="renovation">
+            <div class="service-list-name">Renovation</div>
+            <div class="service-list-brief">Fit-outs &amp; upgrades</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="service-detail-panel reveal reveal-delay-2">
+        <div class="active" id="sdp-residential">
+          <div class="sdp-num">01</div>
+          <h3 class="sdp-title">Residential Construction</h3>
+          <p class="sdp-body">We design and build homes that reflect the aspirations of Botswana's families. From single-plot custom homes to large gated estates, our residential projects combine structural excellence with thoughtful design.</p>
+          <div class="sdp-features">
+            <div class="sdp-feature"><div class="sdp-feature-dot"></div><span class="sdp-feature-text">Custom single-family homes and luxury residences</span></div>
+            <div class="sdp-feature"><div class="sdp-feature-dot"></div><span class="sdp-feature-text">Gated estate and housing scheme development</span></div>
+            <div class="sdp-feature"><div class="sdp-feature-dot"></div><span class="sdp-feature-text">Government and affordable housing contracts</span></div>
+            <div class="sdp-feature"><div class="sdp-feature-dot"></div><span class="sdp-feature-text">Full design-build with architectural services</span></div>
+          </div>
+        </div>
+        <div id="sdp-commercial">
+          <div class="sdp-num">02</div>
+          <h3 class="sdp-title">Commercial &amp; Retail</h3>
+          <p class="sdp-body">Our commercial portfolio includes some of Botswana's most recognised office towers, retail parks, and mixed-use developments. We understand the business case behind every project.</p>
+          <div class="sdp-features">
+            <div class="sdp-feature"><div class="sdp-feature-dot"></div><span class="sdp-feature-text">Grade A office towers and business parks</span></div>
+            <div class="sdp-feature"><div class="sdp-feature-dot"></div><span class="sdp-feature-text">Retail centres and shopping complexes</span></div>
+            <div class="sdp-feature"><div class="sdp-feature-dot"></div><span class="sdp-feature-text">Hospitality — hotels, lodges, and resorts</span></div>
+            <div class="sdp-feature"><div class="sdp-feature-dot"></div><span class="sdp-feature-text">Industrial warehousing and logistics facilities</span></div>
+          </div>
+        </div>
+        <div id="sdp-infrastructure">
+          <div class="sdp-num">03</div>
+          <h3 class="sdp-title">Infrastructure &amp; Civil</h3>
+          <p class="sdp-body">Critical national infrastructure is built on trust and precision. We have delivered road upgrades, water infrastructure, and public facilities across all nine districts of Botswana.</p>
+          <div class="sdp-features">
+            <div class="sdp-feature"><div class="sdp-feature-dot"></div><span class="sdp-feature-text">Road construction, upgrades and rehabilitation</span></div>
+            <div class="sdp-feature"><div class="sdp-feature-dot"></div><span class="sdp-feature-text">Bridges, culverts and drainage systems</span></div>
+            <div class="sdp-feature"><div class="sdp-feature-dot"></div><span class="sdp-feature-text">Water reticulation and sanitation infrastructure</span></div>
+            <div class="sdp-feature"><div class="sdp-feature-dot"></div><span class="sdp-feature-text">Public buildings — schools, clinics, government</span></div>
+          </div>
+        </div>
+        <div id="sdp-renovation">
+          <div class="sdp-num">04</div>
+          <h3 class="sdp-title">Renovation &amp; Fit-Out</h3>
+          <p class="sdp-body">We transform existing spaces with surgical precision. From corporate office fit-outs to full property renovations, we minimise disruption and maximise the result.</p>
+          <div class="sdp-features">
+            <div class="sdp-feature"><div class="sdp-feature-dot"></div><span class="sdp-feature-text">Corporate office interior fit-outs</span></div>
+            <div class="sdp-feature"><div class="sdp-feature-dot"></div><span class="sdp-feature-text">Structural renovations and extensions</span></div>
+            <div class="sdp-feature"><div class="sdp-feature-dot"></div><span class="sdp-feature-text">Historic building restoration</span></div>
+            <div class="sdp-feature"><div class="sdp-feature-dot"></div><span class="sdp-feature-text">Mechanical, electrical and plumbing upgrades</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Process -->
+<section class="process section">
+  <div class="container">
+    <span class="tag reveal">How We Work</span>
+    <h2 class="heading-lg reveal reveal-delay-1" style="margin-top:20px;">From Concept<br><em class="italic">to Completion</em></h2>
+    <div class="process-steps">
+      <div class="process-step reveal">
+        <div class="process-num">01</div>
+        <div class="process-name">Consultation</div>
+        <p class="process-desc">We listen. Understanding your brief, timeline, and budget before anything else.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-1">
+        <div class="process-num">02</div>
+        <div class="process-name">Design &amp; Plan</div>
+        <p class="process-desc">Architectural drawings, engineering specs, and full project planning documents.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-2">
+        <div class="process-num">03</div>
+        <div class="process-name">Approvals</div>
+        <p class="process-desc">We manage all council, DTRP, and regulatory submissions on your behalf.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-3">
+        <div class="process-num">04</div>
+        <div class="process-name">Build</div>
+        <p class="process-desc">On-site execution with weekly client reporting, quality checks, and safety management.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-4">
+        <div class="process-num">05</div>
+        <div class="process-name">Handover</div>
+        <p class="process-desc">Snagging, certification, and post-completion support. Your project, delivered right.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="contact section">
+  <div class="container">
+    <span class="tag reveal">Get In Touch</span>
+    <h2 class="heading-lg reveal reveal-delay-1" style="margin-top:20px; margin-bottom:64px;">
+      Start Your<br><em class="italic">Project Today</em>
+    </h2>
+
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <div class="contact-info-item">
+          <div class="contact-info-label">Head Office</div>
+          <div class="contact-info-val">Francistown</div>
+          <div class="contact-info-sub">Plot 1847, Industrial Area<br>Francistown, Botswana</div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-info-label">Gaborone Branch</div>
+          <div class="contact-info-val">Gaborone CBD</div>
+          <div class="contact-info-sub">Unit 4, Finance House<br>Khama Crescent, Gaborone</div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-info-label">Phone</div>
+          <div class="contact-info-val" style="font-size:28px;">+267 71 234 567</div>
+          <div class="contact-info-sub">Mon–Fri, 7:30am – 5:30pm SAST</div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-info-label">Email</div>
+          <div class="contact-info-val" style="font-size:20px;">info@kagoconstructions.co.bw</div>
+        </div>
+      </div>
+
+      <div class="reveal reveal-delay-1">
+        <form class="form" onsubmit="handleSubmit(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Full Name *</label>
+              <input class="form-input" type="text" placeholder="Kgosi Motswana" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Phone Number *</label>
+              <input class="form-input" type="tel" placeholder="+267 71 000 000" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address *</label>
+            <input class="form-input" type="email" placeholder="kgosi@company.co.bw" required />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Project Type *</label>
+              <select class="form-select form-input" required>
+                <option value="" disabled selected>Select type</option>
+                <option>Residential — New Build</option>
+                <option>Residential — Renovation</option>
+                <option>Commercial</option>
+                <option>Infrastructure / Civil</option>
+                <option>Interior Fit-Out</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Estimated Budget</label>
+              <select class="form-select form-input">
+                <option value="" disabled selected>Select range</option>
+                <option>Under P 500,000</option>
+                <option>P 500K – P 2M</option>
+                <option>P 2M – P 10M</option>
+                <option>P 10M – P 50M</option>
+                <option>Above P 50M</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Location / District</label>
+            <input class="form-input" type="text" placeholder="e.g. Francistown, Gaborone, Maun..." />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Project Brief</label>
+            <textarea class="form-textarea" placeholder="Tell us about your project — scope, timeline, any special requirements..."></textarea>
+          </div>
+          <div class="form-submit">
+            <button type="submit" class="btn-primary" id="submit-btn">
+              Submit Enquiry
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            </button>
+          </div>
+          <div id="form-success" style="display:none; margin-top:16px; padding:16px 20px; background:rgba(201,146,42,0.1); border:1px solid var(--gold-border); color:var(--gold); font-size:13px; font-weight:500; letter-spacing:0.04em;">
+            ✓ Thank you. We'll be in touch within 24 hours.
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Map Placeholder -->
+    <div class="map-block reveal">
+      <div class="map-pin">
+        <div class="map-pin-dot"></div>
+        <div class="map-pin-label">Kago Constructions</div>
+        <div class="map-pin-sub">Plot 1847, Industrial Area · Francistown, Botswana</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo-main">Kago</div>
+        <div class="footer-logo-sub">Constructions</div>
+        <p class="footer-tagline">Building Botswana's future — one landmark at a time.<br>Francistown · Gaborone · Maun · Kasane</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Company</div>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="about.html#team">Our Team</a></li>
+          <li><a href="about.html#values">Our Values</a></li>
+          <li><a href="#contact">Careers</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Services</div>
+        <ul>
+          <li><a href="#sdp-residential">Residential</a></li>
+          <li><a href="#sdp-commercial">Commercial</a></li>
+          <li><a href="#sdp-infrastructure">Infrastructure</a></li>
+          <li><a href="#sdp-renovation">Renovation</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Contact</div>
+        <ul>
+          <li><a href="tel:+26771234567">+267 71 234 567</a></li>
+          <li><a href="mailto:info@kagoconstructions.co.bw">info@kagoconstructions.co.bw</a></li>
+          <li><a href="#">Plot 1847, Industrial Area, Francistown</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2024 Kago Constructions Pty Ltd. All rights reserved.</span>
+      <div class="footer-badges">
+        <span class="footer-badge">BOCCIM Member</span>
+        <span class="footer-badge">ISO 9001 Certified</span>
+        <span class="footer-badge">CIDB Registered</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+<script>
+  // Filter
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      document.querySelectorAll('.project-card').forEach(card => {
+        const cat = card.dataset.category;
+        card.style.display = (filter === 'all' || cat === filter) ? '' : 'none';
+      });
+    });
+  });
+
+  // Services tab
+  document.querySelectorAll('.service-list-item').forEach(item => {
+    item.addEventListener('click', () => {
+      document.querySelectorAll('.service-list-item').forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+      const service = item.dataset.service;
+      document.querySelectorAll('.service-detail-panel > div').forEach(p => p.classList.remove('active'));
+      document.getElementById('sdp-' + service)?.classList.add('active');
+    });
+  });
+
+  // Form
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+    setTimeout(() => {
+      document.getElementById('form-success').style.display = 'block';
+      btn.style.display = 'none';
+    }, 1200);
+  }
+</script>
+</body>
+</html>

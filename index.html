@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kago Constructions — Building Botswana's Future</title>
+  <meta name="description" content="Kago Constructions — Premium construction company in Botswana. Residential, commercial, and infrastructure projects across Gaborone, Francistown, and beyond." />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ── Hero ─────────────────────────────────────────── */
+    .hero {
+      position: relative; min-height: 100vh; display: flex; align-items: center;
+      overflow: hidden; background: var(--bg);
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 80% at 70% 50%, rgba(201,146,42,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 60% at 20% 80%, rgba(201,146,42,0.04) 0%, transparent 50%);
+    }
+    .hero-pattern {
+      position: absolute; inset: 0; z-index: 0; opacity: 0.4;
+      background-image:
+        repeating-linear-gradient(45deg, transparent 0, transparent 30px, rgba(201,146,42,0.03) 30px, rgba(201,146,42,0.03) 31px),
+        repeating-linear-gradient(-45deg, transparent 0, transparent 30px, rgba(201,146,42,0.03) 30px, rgba(201,146,42,0.03) 31px);
+    }
+    .hero-line-v {
+      position: absolute; top: 0; bottom: 0; width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--gold-border) 30%, var(--gold-border) 70%, transparent);
+    }
+    .hero-line-v:nth-child(1) { left: calc(50% - 280px); }
+    .hero-line-v:nth-child(2) { right: calc(50% - 280px); }
+
+    .hero-container {
+      position: relative; z-index: 1; max-width: var(--max-w);
+      margin: 0 auto; padding: 0 40px;
+      padding-top: calc(var(--nav-h) + 60px);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+      width: 100%;
+    }
+    .hero-eyebrow {
+      display: flex; align-items: center; gap: 16px; margin-bottom: 32px;
+      animation: fadeUp 0.8s var(--ease-out-expo) 0.2s both;
+    }
+    .hero-eyebrow-line {
+      width: 48px; height: 1px; background: var(--gold);
+    }
+    .hero-eyebrow-text {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--gold);
+    }
+    .hero-title {
+      font-family: var(--display); font-size: clamp(54px, 7.5vw, 100px);
+      font-weight: 300; line-height: 1.02; color: var(--white);
+      animation: fadeUp 0.9s var(--ease-out-expo) 0.35s both;
+    }
+    .hero-title em { font-style: italic; color: var(--gold); }
+    .hero-title .hero-title-2 { display: block; }
+
+    .hero-body {
+      margin: 32px 0 48px; font-size: 16px; color: var(--muted);
+      font-weight: 300; line-height: 1.8; max-width: 440px;
+      animation: fadeUp 0.9s var(--ease-out-expo) 0.5s both;
+    }
+    .hero-ctas {
+      display: flex; gap: 16px; flex-wrap: wrap;
+      animation: fadeUp 0.9s var(--ease-out-expo) 0.65s both;
+    }
+
+    /* Hero visual side */
+    .hero-visual {
+      position: relative; height: 600px;
+      animation: fadeIn 1.2s var(--ease-out-expo) 0.4s both;
+    }
+    .hero-img-main {
+      width: 100%; height: 100%; object-fit: cover;
+      background: var(--surface-2);
+      position: relative; overflow: hidden;
+      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 32px), calc(100% - 32px) 100%, 0 100%);
+    }
+    .hero-img-inner {
+      width: 100%; height: 100%;
+      background:
+        linear-gradient(160deg, rgba(201,146,42,0.08) 0%, transparent 40%, rgba(0,0,0,0.4) 100%),
+        repeating-conic-gradient(var(--surface-2) 0% 25%, var(--surface-3) 0% 50%);
+      background-size: 100%, 40px 40px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-img-icon {
+      opacity: 0.12;
+    }
+    .hero-img-icon svg { width: 120px; height: 120px; }
+    .hero-badge {
+      position: absolute; bottom: -24px; left: -24px;
+      background: var(--gold); padding: 28px 32px;
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+    }
+    .hero-badge-num {
+      font-family: var(--display); font-size: 48px; font-weight: 600;
+      color: #000; line-height: 1;
+    }
+    .hero-badge-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: rgba(0,0,0,0.65);
+    }
+    .hero-cert {
+      position: absolute; top: 32px; right: -16px;
+      background: var(--surface-2); border: 1px solid var(--gold-border);
+      padding: 20px 24px; display: flex; flex-direction: column; gap: 4px;
+    }
+    .hero-cert-label {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--gold);
+    }
+    .hero-cert-val {
+      font-family: var(--display); font-size: 20px; color: var(--white);
+    }
+
+    .hero-scroll {
+      position: absolute; bottom: 48px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+      z-index: 1; animation: fadeIn 1s var(--ease-out-expo) 1s both;
+    }
+    .hero-scroll span {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--muted-2);
+    }
+    .hero-scroll-line {
+      width: 1px; height: 60px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: lineGrow 1.5s ease-in-out infinite alternate;
+    }
+
+    /* ── Stats ─────────────────────────────────────────── */
+    .stats { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 0; }
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+    }
+    .stat-item {
+      padding: 60px 40px; border-right: 1px solid var(--border);
+      position: relative; overflow: hidden;
+      transition: background 0.3s;
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-item:hover { background: var(--surface-2); }
+    .stat-item::after {
+      content: ''; position: absolute; bottom: 0; left: 40px;
+      width: 0; height: 2px; background: var(--gold);
+      transition: width 0.4s var(--ease-out-expo);
+    }
+    .stat-item:hover::after { width: calc(100% - 80px); }
+    .stat-num {
+      font-family: var(--display); font-size: 64px; font-weight: 300;
+      color: var(--white); line-height: 1; margin-bottom: 8px;
+    }
+    .stat-label {
+      font-size: 12px; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--muted);
+    }
+
+    /* ── Services ──────────────────────────────────────── */
+    .services-header {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+      align-items: end; margin-bottom: 64px;
+    }
+    .services-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
+      background: var(--border);
+    }
+    .service-card {
+      background: var(--surface); padding: 56px 48px; position: relative;
+      overflow: hidden; transition: background 0.3s;
+    }
+    .service-card:hover { background: var(--surface-2); }
+    .service-card::before {
+      content: attr(data-num);
+      font-family: var(--display); font-size: 120px; font-weight: 700;
+      position: absolute; right: -10px; top: -20px;
+      color: rgba(255,255,255,0.025); line-height: 1;
+      pointer-events: none; transition: opacity 0.3s;
+    }
+    .service-icon {
+      width: 52px; height: 52px; border: 1px solid var(--gold-border);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 32px; transition: background 0.3s, border-color 0.3s;
+    }
+    .service-card:hover .service-icon { background: var(--gold-dim); border-color: var(--gold); }
+    .service-icon svg { width: 24px; height: 24px; stroke: var(--gold); fill: none; stroke-width: 1.5; }
+    .service-title {
+      font-family: var(--display); font-size: 28px; font-weight: 400;
+      color: var(--white); margin-bottom: 16px; line-height: 1.2;
+    }
+    .service-desc { font-size: 14px; color: var(--muted); line-height: 1.75; }
+    .service-link {
+      display: inline-flex; align-items: center; gap: 8px; margin-top: 28px;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--gold);
+      transition: gap 0.3s;
+    }
+    .service-card:hover .service-link { gap: 14px; }
+    .service-link svg { width: 14px; height: 14px; stroke: currentColor; }
+
+    /* ── Featured Project ──────────────────────────────── */
+    .featured { background: var(--surface); }
+    .featured-inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+      min-height: 600px; border: 1px solid var(--border);
+    }
+    .featured-visual {
+      position: relative; background: var(--surface-2); overflow: hidden;
+    }
+    .featured-img {
+      width: 100%; height: 100%;
+      background:
+        linear-gradient(120deg, rgba(201,146,42,0.07) 0%, transparent 50%),
+        repeating-linear-gradient(30deg, var(--surface-2) 0, var(--surface-2) 20px, var(--surface-3) 20px, var(--surface-3) 40px);
+      display: flex; align-items: center; justify-content: center; min-height: 500px;
+    }
+    .featured-img-label {
+      position: absolute; bottom: 32px; left: 32px;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .featured-img-tag {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--gold);
+      background: rgba(8,8,8,0.7); padding: 6px 12px; backdrop-filter: blur(10px);
+      border: 1px solid var(--gold-border); width: fit-content;
+    }
+    .featured-img-name {
+      font-family: var(--display); font-size: 22px; font-weight: 400;
+      color: var(--white); background: rgba(8,8,8,0.7); padding: 8px 16px;
+      backdrop-filter: blur(10px); width: fit-content;
+    }
+    .featured-content {
+      padding: 72px 64px; display: flex; flex-direction: column; justify-content: center;
+    }
+    .featured-meta {
+      display: flex; gap: 32px; margin-bottom: 40px; padding-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+    }
+    .featured-meta-item { display: flex; flex-direction: column; gap: 4px; }
+    .featured-meta-label {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--muted-2);
+    }
+    .featured-meta-val {
+      font-family: var(--display); font-size: 20px; font-weight: 400; color: var(--white);
+    }
+
+    /* ── Testimonial ───────────────────────────────────── */
+    .testimonial {
+      background: var(--bg); position: relative; overflow: hidden;
+    }
+    .testimonial-inner {
+      max-width: 860px; margin: 0 auto; text-align: center;
+    }
+    .testimonial-quote-mark {
+      font-family: var(--display); font-size: 160px; line-height: 0.5;
+      color: var(--gold); opacity: 0.2; margin-bottom: 16px;
+      display: block;
+    }
+    .testimonial-text {
+      font-family: var(--display); font-size: clamp(22px, 3vw, 36px);
+      font-weight: 300; font-style: italic; line-height: 1.5;
+      color: var(--white); margin-bottom: 40px;
+    }
+    .testimonial-author { display: flex; align-items: center; justify-content: center; gap: 20px; }
+    .testimonial-avatar {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: var(--surface-2); border: 1px solid var(--gold-border);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--display); font-size: 20px; color: var(--gold);
+    }
+    .testimonial-name {
+      font-size: 14px; font-weight: 600; color: var(--white); letter-spacing: 0.04em;
+    }
+    .testimonial-role { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    /* ── CTA Band ──────────────────────────────────────── */
+    .cta-band {
+      background: var(--gold); padding: 80px 0; position: relative; overflow: hidden;
+    }
+    .cta-band::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(0,0,0,0.03) 40px, rgba(0,0,0,0.03) 41px);
+    }
+    .cta-band-inner {
+      position: relative; z-index: 1;
+      display: flex; justify-content: space-between; align-items: center; gap: 40px;
+    }
+    .cta-band-title {
+      font-family: var(--display); font-size: clamp(36px, 5vw, 60px);
+      font-weight: 400; color: #000; line-height: 1.1; max-width: 600px;
+    }
+    .cta-band-title em { font-style: italic; }
+    .btn-dark {
+      display: inline-flex; align-items: center; gap: 12px;
+      padding: 18px 42px; background: #000; color: var(--cream);
+      font-family: var(--body); font-size: 12px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase; white-space: nowrap;
+      transition: all 0.3s var(--ease-out-expo);
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+    }
+    .btn-dark:hover { background: var(--surface-3); transform: translateY(-2px); }
+    .btn-dark svg { stroke: currentColor; width: 16px; height: 16px; }
+
+    /* ── Mobile Menu ───────────────────────────────────── */
+    .mobile-menu {
+      position: fixed; inset: 0; background: var(--bg); z-index: 99;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      gap: 40px; transform: translateX(100%); transition: transform 0.4s var(--ease-out-expo);
+    }
+    .mobile-menu.open { transform: none; }
+    .mobile-menu a {
+      font-family: var(--display); font-size: 48px; font-weight: 300;
+      color: var(--white); transition: color 0.25s; letter-spacing: 0.04em;
+    }
+    .mobile-menu a:hover { color: var(--gold); }
+
+    /* ── Responsive ────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .hero-container { grid-template-columns: 1fr; gap: 60px; }
+      .hero-visual { height: 400px; }
+      .hero-badge { bottom: -16px; left: 0; }
+      .services-header { grid-template-columns: 1fr; gap: 24px; }
+      .featured-inner { grid-template-columns: 1fr; }
+      .cta-band-inner { flex-direction: column; text-align: center; }
+    }
+    @media (max-width: 768px) {
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .stat-item:nth-child(2) { border-right: none; }
+      .stat-item:nth-child(3) { border-top: 1px solid var(--border); }
+      .services-grid { grid-template-columns: 1fr; }
+      .featured-content { padding: 48px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav">
+  <div class="container">
+    <a href="index.html" class="nav-logo">
+      <span class="logo-main">Kago</span>
+      <span class="logo-sub">Constructions</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="projects.html#contact">Contact</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="tel:+26771234567" class="nav-tel">+267 71 234 567</a>
+      <a href="projects.html#contact" class="btn-primary" style="padding:12px 24px; font-size:11px;">
+        Get a Quote
+      </a>
+    </div>
+    <button class="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu">
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="projects.html">Projects</a>
+  <a href="projects.html#contact">Contact</a>
+</div>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-pattern"></div>
+  <div class="hero-line-v"></div>
+  <div class="hero-line-v"></div>
+
+  <div class="hero-container">
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <div class="hero-eyebrow-line"></div>
+        <span class="hero-eyebrow-text">Est. 2008 · Francistown, Botswana</span>
+      </div>
+      <h1 class="hero-title">
+        Building<br>
+        <em>Botswana's</em>
+        <span class="hero-title-2">Tomorrow</span>
+      </h1>
+      <p class="hero-body">
+        Kago Constructions delivers landmark residential, commercial, and infrastructure
+        projects across Botswana — built with precision, driven by purpose.
+      </p>
+      <div class="hero-ctas">
+        <a href="projects.html" class="btn-primary">
+          View Our Projects
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+        <a href="about.html" class="btn-outline">Our Story</a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-img-main">
+        <div class="hero-img-inner">
+          <div class="hero-img-icon">
+            <svg viewBox="0 0 120 120" fill="none" stroke="rgba(201,146,42,0.8)" stroke-width="1">
+              <rect x="10" y="60" width="30" height="50"/>
+              <rect x="45" y="40" width="30" height="70"/>
+              <rect x="80" y="20" width="30" height="90"/>
+              <line x1="5" y1="110" x2="115" y2="110" stroke-width="2"/>
+              <line x1="15" y1="60" x2="15" y2="50" stroke-dasharray="3,3"/>
+              <line x1="60" y1="40" x2="60" y2="30" stroke-dasharray="3,3"/>
+              <line x1="95" y1="20" x2="95" y2="10" stroke-dasharray="3,3"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="hero-badge">
+        <div class="hero-badge-num">15+</div>
+        <div class="hero-badge-label">Years of Excellence</div>
+      </div>
+      <div class="hero-cert">
+        <span class="hero-cert-label">BOCCIM Certified</span>
+        <span class="hero-cert-val">Grade A Contractor</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section class="stats">
+  <div class="stats-grid">
+    <div class="stat-item reveal">
+      <div class="stat-num" data-target="15" data-suffix="+">0+</div>
+      <div class="stat-label">Years of Experience</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-1">
+      <div class="stat-num" data-target="240" data-suffix="+">0+</div>
+      <div class="stat-label">Projects Completed</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-2">
+      <div class="stat-num" data-target="80" data-suffix="+">0+</div>
+      <div class="stat-label">Satisfied Clients</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-3">
+      <div class="stat-num" data-target="9" data-suffix="">0</div>
+      <div class="stat-label">Districts Served</div>
+    </div>
+  </div>
+</section>
+
+<!-- Services -->
+<section class="section" style="background:var(--bg);">
+  <div class="container">
+    <div class="services-header">
+      <div>
+        <span class="tag reveal">What We Build</span>
+        <h2 class="heading-lg reveal reveal-delay-1" style="margin-top:20px;">
+          Full-Spectrum<br><em style="font-style:italic; color:var(--gold);">Construction</em><br>Services
+        </h2>
+      </div>
+      <div>
+        <p class="body-lg reveal reveal-delay-2">
+          From the first blueprint to final handover, Kago Constructions brings
+          expertise, integrity, and craftsmanship to every project in Botswana.
+        </p>
+        <div class="divider-gold reveal reveal-delay-3"></div>
+        <a href="projects.html" class="btn-outline reveal reveal-delay-3">All Services</a>
+      </div>
+    </div>
+
+    <div class="services-grid">
+      <!-- Residential -->
+      <div class="service-card reveal" data-num="01">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <h3 class="service-title">Residential Construction</h3>
+        <p class="service-desc">Custom homes, gated estates, and housing developments. We build living spaces that stand as a testament to Botswana's growing prosperity.</p>
+        <a href="projects.html" class="service-link">
+          Explore
+          <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </a>
+      </div>
+
+      <!-- Commercial -->
+      <div class="service-card reveal reveal-delay-1" data-num="02">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="1"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+        </div>
+        <h3 class="service-title">Commercial & Retail</h3>
+        <p class="service-desc">Office complexes, retail centres, and commercial developments built to international standards with deep understanding of the local market.</p>
+        <a href="projects.html" class="service-link">
+          Explore
+          <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </a>
+      </div>
+
+      <!-- Infrastructure -->
+      <div class="service-card reveal reveal-delay-2" data-num="03">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M6 3v18M18 3v18M3 9h18M3 15h18"/></svg>
+        </div>
+        <h3 class="service-title">Infrastructure & Civil</h3>
+        <p class="service-desc">Roads, bridges, water reticulation, and public infrastructure. Building the backbone of Botswana's future — from Francistown to Gaborone.</p>
+        <a href="projects.html" class="service-link">
+          Explore
+          <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </a>
+      </div>
+
+      <!-- Renovation -->
+      <div class="service-card reveal reveal-delay-3" data-num="04">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+        </div>
+        <h3 class="service-title">Renovation & Fit-Out</h3>
+        <p class="service-desc">Transforming existing spaces with precision upgrades, office fit-outs, and property renovations that breathe new life into established structures.</p>
+        <a href="projects.html" class="service-link">
+          Explore
+          <svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Project -->
+<section class="section featured">
+  <div class="container">
+    <span class="tag reveal">Flagship Project</span>
+    <h2 class="heading-lg reveal reveal-delay-1" style="margin-top:20px; margin-bottom:48px;">
+      A Legacy of<br><em style="font-style:italic;">Landmark Work</em>
+    </h2>
+
+    <div class="featured-inner reveal reveal-delay-2">
+      <div class="featured-visual">
+        <div class="featured-img">
+          <svg width="100" height="100" viewBox="0 0 100 100" fill="none" opacity="0.1">
+            <rect x="10" y="30" width="80" height="60" stroke="var(--gold)" stroke-width="1"/>
+            <rect x="20" y="45" width="15" height="20" stroke="var(--gold)" stroke-width="1"/>
+            <rect x="45" y="45" width="15" height="20" stroke="var(--gold)" stroke-width="1"/>
+            <rect x="70" y="45" width="15" height="20" stroke="var(--gold)" stroke-width="1"/>
+            <line x1="10" y1="30" x2="50" y2="10" stroke="var(--gold)" stroke-width="1"/>
+            <line x1="90" y1="30" x2="50" y2="10" stroke="var(--gold)" stroke-width="1"/>
+          </svg>
+        </div>
+        <div class="featured-img-label">
+          <span class="featured-img-tag">Commercial · 2023</span>
+          <span class="featured-img-name">Masa Heights, Gaborone</span>
+        </div>
+      </div>
+      <div class="featured-content">
+        <div class="featured-meta">
+          <div class="featured-meta-item">
+            <span class="featured-meta-label">Location</span>
+            <span class="featured-meta-val">Gaborone CBD</span>
+          </div>
+          <div class="featured-meta-item">
+            <span class="featured-meta-label">Value</span>
+            <span class="featured-meta-val">P 42M</span>
+          </div>
+          <div class="featured-meta-item">
+            <span class="featured-meta-label">Duration</span>
+            <span class="featured-meta-val">18 Months</span>
+          </div>
+        </div>
+        <span class="tag">Featured Build</span>
+        <h3 class="heading-sm" style="margin-top:20px; margin-bottom:16px;">
+          Masa Heights<br>Commercial Tower
+        </h3>
+        <p class="body-md" style="margin-bottom:32px;">
+          A 12-storey mixed-use commercial tower in Gaborone's CBD — combining
+          premium office space, retail floors, and rooftop amenities. Delivered
+          on time and within budget, setting a new benchmark for urban
+          construction in Botswana.
+        </p>
+        <a href="projects.html" class="btn-primary">
+          View All Projects
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonial -->
+<section class="section testimonial">
+  <div class="container">
+    <div class="testimonial-inner reveal">
+      <span class="testimonial-quote-mark">"</span>
+      <p class="testimonial-text">
+        Kago Constructions delivered our new headquarters ahead of schedule and
+        exceeded every quality benchmark we set. Their knowledge of local conditions
+        and unwavering professionalism is unmatched in Botswana.
+      </p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">O</div>
+        <div>
+          <div class="testimonial-name">Onkemetse Modise</div>
+          <div class="testimonial-role">CEO, Modise Holdings — Francistown</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Band -->
+<section class="cta-band">
+  <div class="container">
+    <div class="cta-band-inner">
+      <h2 class="cta-band-title">
+        Ready to start your<br>
+        <em>next project?</em>
+      </h2>
+      <a href="projects.html#contact" class="btn-dark">
+        Request a Consultation
+        <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke-width="2" stroke-linecap="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo-main">Kago</div>
+        <div class="footer-logo-sub">Constructions</div>
+        <p class="footer-tagline">
+          Building Botswana's future — one landmark at a time.<br>
+          Francistown · Gaborone · Maun · Kasane
+        </p>
+        <div style="margin-top:28px; display:flex; gap:12px;">
+          <a href="#" style="width:38px;height:38px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all 0.25s;" onmouseover="this.style.borderColor='var(--gold-border)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+          </a>
+          <a href="#" style="width:38px;height:38px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all 0.25s;" onmouseover="this.style.borderColor='var(--gold-border)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="#" style="width:38px;height:38px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all 0.25s;" onmouseover="this.style.borderColor='var(--gold-border)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Company</div>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="about.html#team">Our Team</a></li>
+          <li><a href="about.html#values">Our Values</a></li>
+          <li><a href="projects.html#contact">Careers</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Services</div>
+        <ul>
+          <li><a href="projects.html">Residential</a></li>
+          <li><a href="projects.html">Commercial</a></li>
+          <li><a href="projects.html">Infrastructure</a></li>
+          <li><a href="projects.html">Renovation</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Contact</div>
+        <ul>
+          <li><a href="tel:+26771234567">+267 71 234 567</a></li>
+          <li><a href="mailto:info@kagoconstructions.co.bw">info@kagoconstructions.co.bw</a></li>
+          <li><a href="#">Plot 1847, Industrial Area<br>Francistown, Botswana</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2024 Kago Constructions Pty Ltd. All rights reserved.</span>
+      <div class="footer-badges">
+        <span class="footer-badge">BOCCIM Member</span>
+        <span class="footer-badge">ISO 9001 Certified</span>
+        <span class="footer-badge">CIDB Registered</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>
